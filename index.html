@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Totoş mert</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .floating-text {
+            position: absolute;
+            font-weight: bold;
+            opacity: 1;
+            animation: float-up 2s ease-out forwards;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-effect 1s ease-out forwards;
+            pointer-events: none;
+        }
+
+        .flash {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+            animation: flash-effect 0.7s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+            40% {
+                transform: translateY(-50px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-200px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes ripple-effect {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(10);
+                opacity: 0;
+            }
+        }
+
+        @keyframes flash-effect {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<script>
+    // Tarayıcı ses motoru ile metni söyleme
+    function speakText(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1.2;
+        utterance.volume = 1;
+        utterance.pitch = 1.1;
+        speechSynthesis.cancel();
+        speechSynthesis.speak(utterance);
+    }
+
+    // Rastgele renk üreten fonksiyon
+    function getRandomColor() {
+        const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFD433', '#FF33FF', '#33FFFF', '#FF9933'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    // Rastgele boyut üreten fonksiyon
+    function getRandomSize() {
+        return Math.floor(Math.random() * 3 + 1) + "rem";
+    }
+
+    // Animasyonlu metin oluşturma
+    function createFloatingText(event) {
+        const text = document.createElement("div");
+        text.classList.add("floating-text");
+
+        // Ekranda rastgele metinler
+        const messages = ["Gay mert!", "Nonoş mert!", "Adil daha iyi oyuncu!", "ibne mert!", "götoş mert!", "top mert!", "Ponçik halil!", "ibne halil!"];
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+
+        // Tıklama pozisyonuna göre metin yerleştir
+        text.style.left = `${event.clientX - 50}px`;
+        text.style.top = `${event.clientY}px`;
+        text.textContent = randomMessage;
+
+        // Rastgele boyut ve renk ayarla
+        text.style.color = getRandomColor();
+        text.style.fontSize = getRandomSize();
+
+        // Metni ekrana ekle
+        document.body.appendChild(text);
+
+        // Animasyon bittikten sonra metni kaldır
+        text.addEventListener("animationend", () => {
+            text.remove();
+        });
+    }
+
+    // Dalga efekti oluşturma
+    function createRippleEffect(event) {
+        const ripple = document.createElement("div");
+        ripple.classList.add("ripple");
+
+        ripple.style.width = ripple.style.height = '150px';
+        ripple.style.left = `${event.clientX - 75}px`;
+        ripple.style.top = `${event.clientY - 75}px`;
+
+        // Rastgele renk ayarla
+        ripple.style.backgroundColor = getRandomColor();
+
+        document.body.appendChild(ripple);
+
+        ripple.addEventListener("animationend", () => {
+            ripple.remove();
+        });
+    }
+
+    // Parlama efekti oluşturma
+    function createFlashEffect(event) {
+        const flash = document.createElement("div");
+        flash.classList.add("flash");
+
+        flash.style.width = flash.style.height = '50px';
+        flash.style.left = `${event.clientX - 25}px`;
+        flash.style.top = `${event.clientY - 25}px`;
+
+        // Rastgele renk ayarla
+        flash.style.backgroundColor = getRandomColor();
+
+        document.body.appendChild(flash);
+
+        flash.addEventListener("animationend", () => {
+            flash.remove();
+        });
+    }
+
+    // Ekrana tıklandığında çalışacak fonksiyon
+    document.body.addEventListener("click", (event) => {
+        speakText("En büyük oyuncu adil!");
+        createFloatingText(event);
+        createRippleEffect(event);
+        createFlashEffect(event);
+    });
+</script>
+
+</body>
+</html>
